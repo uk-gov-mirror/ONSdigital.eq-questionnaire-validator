@@ -9,7 +9,12 @@ const jsConfigs = neostandard({}).map((config) => ({
 
 export default [
   ...jsConfigs,
-
+  {
+    ignores: [
+      "node_modules/**",
+      "megalinter-reports/**",
+    ]
+  },
   // Your custom rule overrides
   {
     files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
