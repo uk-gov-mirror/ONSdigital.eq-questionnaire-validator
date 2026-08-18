@@ -9,9 +9,9 @@ from app.validators.blocks.validate_list_collector_quesitons_mixin import (
     ValidateListCollectorQuestionsMixin,
 )
 from app.validators.questionnaire_schema import (
+    get_blocks,
     get_list_collector_answer_ids,
     get_list_collector_answer_ids_by_child_block,
-    get_other_blocks,
 )
 
 
@@ -144,9 +144,9 @@ class ListCollectorValidator(BlockValidator, ValidateListCollectorQuestionsMixin
             self.questionnaire_schema,
             self.block["id"],
         )
-        other_list_collectors = get_other_blocks(
-            self.questionnaire_schema,
-            self.block["id"],
+        other_list_collectors = get_blocks(
+            questionnaire_schema=self.questionnaire_schema,
+            block_id_to_filter=self.block["id"],
             type="ListCollector",
         )
 
@@ -185,9 +185,9 @@ class ListCollectorValidator(BlockValidator, ValidateListCollectorQuestionsMixin
         if not self.block.get("repeating_blocks"):
             return
         list_name = self.block["for_list"]
-        other_list_collectors = get_other_blocks(
-            self.questionnaire_schema,
-            self.block["id"],
+        other_list_collectors = get_blocks(
+            questionnaire_schema=self.questionnaire_schema,
+            block_id_to_filter=self.block["id"],
             for_list=list_name,
             type="ListCollector",
         )

@@ -66,35 +66,24 @@ def get_block(questionnaire_schema, block_id):
 
 
 @lru_cache
-def get_blocks(questionnaire_schema, **filters):
+def get_blocks(questionnaire_schema, block_id_to_filter=None, **filters):
     conditions = []
     for key, value in filters.items():
         conditions.append(f'@.{key}=="{value}"')
 
     if conditions:
         final_condition = " & ".join(conditions)
+        path_to_parse = (
+            f'$..blocks[?(@.id != "{block_id_to_filter}" & {final_condition})]'
+            if block_id_to_filter
+            else f"$..blocks[?({final_condition})]"
+        )
+
         return [
             match.value
-            for match in ext_parse(f"$..blocks[?({final_condition})]").find(
+            for match in ext_parse(path_to_parse).find(
                 questionnaire_schema.schema,
             )
-        ]
-    return questionnaire_schema.blocks
-
-
-@lru_cache
-def get_other_blocks(questionnaire_schema, block_id_to_filter, **filters):
-    conditions = []
-    for key, value in filters.items():
-        conditions.append(f'@.{key}=="{value}"')
-
-    if conditions:
-        final_condition = " & ".join(conditions)
-        return [
-            match.value
-            for match in ext_parse(
-                f'$..blocks[?(@.id != "{block_id_to_filter}" & {final_condition})]',
-            ).find(questionnaire_schema.schema)
         ]
     return questionnaire_schema.blocks
 

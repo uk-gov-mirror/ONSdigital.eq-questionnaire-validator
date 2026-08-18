@@ -7,7 +7,6 @@ from app.validators.questionnaire_schema import (
     get_blocks,
     get_context_from_match,
     get_first_answer_in_block,
-    get_other_blocks,
 )
 from tests.utils import _open_and_load_schema_file
 
@@ -105,8 +104,8 @@ def test_get_other_blocks():
 
     questionnaire_schema = QuestionnaireSchema(_open_and_load_schema_file(filename))
 
-    other_list_collectors = get_other_blocks(
-        questionnaire_schema,
+    other_list_collectors = get_blocks(
+        questionnaire_schema=questionnaire_schema,
         block_id_to_filter="list-collector",
         type="ListCollector",
         for_list="people",
