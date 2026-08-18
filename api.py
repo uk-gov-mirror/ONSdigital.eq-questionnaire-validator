@@ -156,7 +156,7 @@ async def validate_schema_from_url(url=None):
         try:
             # Opens the URL and validates the schema
             # Mitigation for opening ftp:// and file:// URLs with urllib.request is implemented in lines 91-95
-            with request.urlopen(parsed_url.geturl()) as opened_url:  # nosec B310  # noqa: S310
+            with request.urlopen(parsed_url.geturl()) as opened_url:  # nosec B310  # noqa: S310, ASYNC210
                 return await validate_schema(data=opened_url.read().decode())
         except error.URLError:
             logger.warning(
@@ -216,7 +216,7 @@ async def validate_schema(data):  # pylint: disable=R0911
             url=AJV_VALIDATOR_URL,
         )
         # Posts JSON data to AJV Validator service and returns a response containing any errors
-        ajv_response = requests.post(
+        ajv_response = requests.post(  # noqa: ASYNC210
             AJV_VALIDATOR_URL,
             json=json_to_validate,
             timeout=10,
