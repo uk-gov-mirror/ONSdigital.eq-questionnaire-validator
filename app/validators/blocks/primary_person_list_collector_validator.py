@@ -11,8 +11,8 @@ from app.validators.blocks.validate_list_collector_quesitons_mixin import (
 )
 from app.validators.questionnaire_schema import (
     get_all_answer_ids,
+    get_blocks,
     get_list_collector_answer_ids,
-    get_other_blocks,
 )
 
 
@@ -75,9 +75,9 @@ class PrimaryPersonListCollectorValidator(
             block["add_or_edit_block"]["id"],
         )
 
-        other_list_collectors = get_other_blocks(
-            self.questionnaire_schema,
-            self.block["id"],
+        other_list_collectors = get_blocks(
+            questionnaire_schema=self.questionnaire_schema,
+            block_id_to_filter=self.block["id"],
             for_list=list_name,
             type="PrimaryPersonListCollector",
         )
